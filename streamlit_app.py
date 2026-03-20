@@ -59,8 +59,10 @@ if st.button("🚀 Calculer mon potentiel"):
     if connait_dechets == "Oui":
         dechets_jour = dechets
     else:
-        if type_client in ["Entreprise", "Soins de santé"]:
-            dechets_jour = repas_ou_lits * 0.15
+        if type_client == "Entreprise":
+            dechets_jour = repas_ou_lits *  0.15
+        elif type_client == "Soins de santé" :
+            dechets_jour = repas_ou_lits *  0.15 * 2.5
         elif type_client == "École":
             dechets_jour = repas_ou_lits * 0.17
         elif type_client == "Restaurant":
