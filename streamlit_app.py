@@ -99,7 +99,7 @@ if st.button("Calculer"):
     st.markdown(f"""
     <div class="result-box">
         💰 Economies estimées <br><br>
-        <strong>{round(gain_total,0)} € / an</strong>
+        <strong>{round(gain_total,0)} € / an</strong> <br><br>
         ♻️ Quantités de déchets estimées <br><br>
         <strong>{dechets_annuel} kg / an</strong>
     </div>
