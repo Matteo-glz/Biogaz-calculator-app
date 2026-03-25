@@ -38,8 +38,6 @@ connait_dechets = st.radio(
     ["Oui", "Non"]
 )
 
-email = st.text_input("📩 Votre email")
-
 repas_ou_lits = None
 dechets = None
 
@@ -53,6 +51,8 @@ else:
     elif type_client == "Industrie": 
         repas_ou_lits = st.number_input("Production journalière", min_value=0)
 
+email = st.text_input("📩 Votre email")
+
 # --- CALCULS ---
 
 if st.button("Calculer"):
@@ -60,16 +60,19 @@ if st.button("Calculer"):
     if connait_dechets == "Oui":
         dechets_jour = dechets
     else:
-        if type_client == "Entreprise" or type_client == "Soins de santé":
-            dechets_jour = repas_ou_lits * 0.15
+        if type_client == "Entreprise" : 
+            dechets_jour = repas_ou_lits * 0.15                 #restau entreprise, 150g déchet
+        elif type_client == "Soins de santé":
+            dechets_jour = repas_ou_lits * 0.15 * 2.5           # Soins de santé, 150g déchet par repas (2,5 repas par lits)              
         elif type_client == "École":
-            dechets_jour = repas_ou_lits * 0.17
+            dechets_jour = repas_ou_lits * 0.17                 # Ecole 170g déchet
         elif type_client == "Restaurant":
-            dechets_jour = repas_ou_lits * 0.2
+            dechets_jour = repas_ou_lits * 0.2                  # Restaurant 200g déceht
         elif type_client == "Industrie" : 
-            dechets_jour = repas_ou_lits * 0.025
+            dechets_jour = repas_ou_lits * 0.025                # Industrie 2,5% de la production en déchet
         else:
             dechets_jour = repas_ou_lits
+
 
     # jours activité
     if type_client == "École" : 
