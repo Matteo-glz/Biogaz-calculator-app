@@ -50,40 +50,45 @@ else:
         repas_ou_lits = st.number_input("Nombre de repas par jour", min_value=0)
     elif type_client == "Soins de santé":
         repas_ou_lits = st.number_input("Nombre de lits", min_value=0)
-    else:
-        repas_ou_lits = st.number_input("Estimation kg déchets/jour", min_value=0)
+    elif type_client == "Industrie": 
+        repas_ou_lits = st.number_input("Production journalière", min_value=0)
 
-# --- CALCUL ---
-if st.button("🚀 Calculer mon potentiel"):
+# --- CALCULS ---
+
+if st.button("Calculer"):
 
     if connait_dechets == "Oui":
         dechets_jour = dechets
     else:
-        if type_client == "Entreprise":
-            dechets_jour = repas_ou_lits *  0.15
-        elif type_client == "Soins de santé" :
-            dechets_jour = repas_ou_lits *  0.15 * 2.5
+        if type_client == "Entreprise" or type_client == "Soins de santé":
+            dechets_jour = repas_ou_lits * 0.15
         elif type_client == "École":
             dechets_jour = repas_ou_lits * 0.17
         elif type_client == "Restaurant":
             dechets_jour = repas_ou_lits * 0.2
+        elif type_client == "Industrie" : 
+            dechets_jour = repas_ou_lits * 0.025
         else:
             dechets_jour = repas_ou_lits
 
-        # jours activité
+    # jours activité
     if type_client == "École" : 
         jours = 200
     elif type_client == "Restaurant" : 
         jours = 230
+    elif type_client == "Hopital" : 
+        jours = 365
+
+        
     else :
         jours = 310
 
-
+    # calculs
     dechets_annuel = dechets_jour * jours
-    biogaz = dechets_annuel * 0.17
-    energie = biogaz * 6
-    valeur_energie = energie * 0.06
-    economie_dechets = (dechets_annuel / 1000) * 150
+    biogaz = dechets_annuel * 0.17                          #pouvoir méthanogène de 0.17
+    energie = biogaz * 6                                    # m3 biogaz = 6 kWh
+    valeur_energie = energie * 0.06                         # prix du kWh = 0.06€
+    economie_dechets = (dechets_annuel / 1000) * 150        # éconimie sur le coût de transport des déchet 150€/tonne
     gain_total = valeur_energie + economie_dechets
 
     # --- DISPLAY ---
