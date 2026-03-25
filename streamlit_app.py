@@ -57,7 +57,7 @@ if st.button("Calculer"):
         dechets_jour = dechets
     else:
         if type_client == "Entreprise" : 
-            dechets_jour = repas_ou_lits * 0.15                 #restau entreprise, 150g déchet
+            dechets_jour = repas_ou_lits * 0.15                 # Resto entreprise, 150g déchet
         elif type_client == "Soins de santé":
             dechets_jour = repas_ou_lits * 0.15 * 2.5           # Soins de santé, 150g déchet par repas (2,5 repas par lits)              
         elif type_client == "École":
@@ -84,7 +84,7 @@ if st.button("Calculer"):
 
     # calculs
     dechets_annuel = dechets_jour * jours
-    biogaz = dechets_annuel * 0.17                          #pouvoir méthanogène de 0.17
+    biogaz = dechets_annuel * 0.17                          #pouvoir méthanogène de 0.17 m3biogaz/kgMb
     energie = biogaz * 6                                    # m3 biogaz = 6 kWh
     valeur_energie = energie * 0.06                         # prix du kWh = 0.06€
     economie_dechets = (dechets_annuel / 1000) * 150        # éconimie sur le coût de transport des déchet 150€/tonne
