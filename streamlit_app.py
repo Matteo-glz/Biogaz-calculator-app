@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import requests
 
 st.set_page_config(page_title="Calculateur Biométhanisation", layout="centered")
 
@@ -99,6 +100,8 @@ if st.button("Calculer"):
     <div class="result-box">
         💰 Economies estimées <br><br>
         <strong>{round(gain_total,0)} € / an</strong>
+        ♻️ Quantités de déchets estimées <br><br>
+        <strong>{dechets_annuel} kg / an</strong>
     </div>
     """, unsafe_allow_html=True)
 
@@ -106,22 +109,40 @@ if st.button("Calculer"):
     st.write(f"⚡ {round(energie,0)} kWh/an")
 
     # --- STOCKAGE CSV ---
-    if email:
-        data = {
+if email:
+    data = {
+        "email": email,
+        "type_client": type_client,
+        "dechets_jour": dechets_jour,
+        "energie_kwh": energie,
+        "gain_euro": gain_total
+    }
+
+    df = pd.DataFrame([data])
+
+    file_path = "leads.csv"
+
+    # --- SAUVEGARDE CSV ---
+    if os.path.exists(file_path):
+        df.to_csv(file_path, mode='a', header=False, index=False)
+    else:
+        df.to_csv(file_path, mode='w', header=True, index=False)
+
+    # --- ENVOI WEBHOOK (MAKE / ZAPIER) ---
+    try:
+        webhook_url = "COLLE_TON_URL_ICI"
+
+        payload = {
             "email": email,
             "type_client": type_client,
-            "dechets_jour": dechets_jour,
-            "energie_kwh": energie,
-            "gain_euro": gain_total
+            "dechets_jour": float(dechets_jour),
+            "energie_kwh": float(energie),
+            "gain_euro": float(gain_total)
         }
 
-        df = pd.DataFrame([data])
+        requests.post(webhook_url, json=payload)
 
-        file_path = "leads.csv"
+    except:
+        st.warning("⚠️ Erreur lors de l'envoi des données")
 
-        if os.path.exists(file_path):
-            df.to_csv(file_path, mode='a', header=False, index=False)
-        else:
-            df.to_csv(file_path, mode='w', header=True, index=False)
-
-        st.success("📊 Données enregistrées avec succès !")
+    st.success("📊 Données enregistrées avec succès !")
