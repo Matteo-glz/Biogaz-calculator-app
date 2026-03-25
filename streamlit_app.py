@@ -65,7 +65,7 @@ if st.button("Calculer"):
         elif type_client == "Restaurant":
             dechets_jour = repas_ou_lits * 0.2                  # Restaurant 200g déceht
         elif type_client == "Industrie" : 
-            dechets_jour = repas_ou_lits * 0.025                # Industrie 2,5% de la production en déchet
+            dechets_jour = repas_ou_lits * 0.05                 # Industrie 5% de la production en déchet
         else:
             dechets_jour = repas_ou_lits
 
